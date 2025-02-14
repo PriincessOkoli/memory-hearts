@@ -1,7 +1,19 @@
-const cards = ["💖", "💖", "😍", "😍", "💌", "💌", "💕", "💕", "💘", "💘", "💓", "💓"];
+const cards = [
+  "💖",
+  "💖",
+  "😍",
+  "😍",
+  "💌",
+  "💌",
+  "💕",
+  "💕",
+  "💘",
+  "💘",
+  "💓",
+  "💓",
+];
 let flippedCards = [];
 let matchedCards = [];
-
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -37,19 +49,58 @@ function createBoard() {
 // 7. call it where it will be triggered , createBoard
 
 function flipCard(event) {
-    const card = event.target;
-    if (!flippedCards.includes(card) && !matchedCards.includes(card) && flippedCards.length < 2) {
+  const card = event.target;
+  if (
+    !flippedCards.includes(card) &&
+    !matchedCards.includes(card) &&
+    flippedCards.length < 2
+  ) {
     card.textContent = card.dataset.value;
     card.classList.add("flipped");
     flippedCards.push(card);
     if (flippedCards.length === 2) {
-    //   checkMatch();
-    console.log("it is match");
-        }
+      checkMatch();
+      console.log("it is match");
     }
+  }
 }
 
 // logic to check if the cards match
 
-createBoard();
+function checkMatch() {
+  const [card1, card2] = flippedCards;
+  if (card1.dataset.value === card2.dataset.value) {
+    card1.classList.add("matched");
+    card2.classList.add("matched");
+    matchedCards.push(card1, card2);
+    flippedCards = [];
+    if (matchedCards.length === cards.length) {
+      setTimeout(() => {
+        alert("🥳🥳 Yay! You've matched all the hearts! Happy Valentine!❤️");
+      }, 600);
+    }
+  } else {
+    setTimeout(() => {
+      card1.textContent = "?";
+      card2.textContent = "?";
+      card1.classList.remove("flipped");
+      card2.classList.remove("flipped");
+      flippedCards = [];
+    }, 1000);
+  }
+}
 
+// 1. to reset game we are resetting is the game board
+// 2. get the #game-board element
+// 3. empty the element
+// 4. empty flippedCards and matchedCards
+// 5. call createBoard()
+
+function resetGame() {
+  const gameBoard = document.getElementById("game-board");
+  gameBoard.innerHTML = "";
+  flippedCards = [];
+  matchedCards = [];
+  createBoard();
+}
+createBoard();
