@@ -73,6 +73,7 @@ function checkMatch() {
     card1.classList.add("matched");
     card2.classList.add("matched");
     matchedCards.push(card1, card2);
+    document.getElementById("pop-sound").play();
     flippedCards = [];
     if (matchedCards.length === cards.length) {
       setTimeout(() => {
